@@ -32,7 +32,6 @@ echo '
 }
 
 }            ';
-    //    f::responseArray($arr);
 
     }    
     
