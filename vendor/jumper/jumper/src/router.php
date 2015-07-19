@@ -7,7 +7,7 @@ class Router
     public static function run() 
     {
         
-		$frontFilterClassName = APP_NAMESPACE."\\frontFilter";
+		$frontFilterClassName = APP_NAMESPACE."\\FrontFilter";
         $url = $frontFilterClassName::getUrl();
 
         $module=J::strtoken($url,2,"/");
