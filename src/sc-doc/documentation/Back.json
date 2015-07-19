@@ -1,0 +1,40 @@
+"/sc-prizes/excelregistered": {
+	"get": {
+		"tags": [
+			"Back"
+		],
+		"summary": "Back - excel registered",
+		"description": "Devuelve un Excel adjunto con todos los usuarios registrados",
+		"operationId": "back-prizes-excelregistered",
+		"produces": [
+			"application/json"
+		],
+		"parameters": [
+		],
+		"responses": {
+			"200": {
+				"description": "OK"
+			}
+		}
+	}
+},
+"/sc-prizes/excelwinners": {
+	"get": {
+		"tags": [
+			"Back"
+		],
+		"summary": "Back - excel winners",
+		"description": "Devuelve un Excel adjunto con todos los usuarios ganadores",
+		"operationId": "back-prizes-excelregistered",
+		"produces": [
+			"application/json"
+		],
+		"parameters": [
+		],
+		"responses": {
+			"200": {
+				"description": "OK"
+			}
+		}
+	}
+}

@@ -1,0 +1,134 @@
+"/sc-prizes/captcha": {
+	"get": {
+		"tags": [
+			"Front - Prizes"
+		],
+		"summary": "Front - Captcha",
+		"description": "Devuelve un id y una imagen de captcha en base64",
+		"operationId": "front-prizes-captcha",
+		"produces": [
+			"application/json"
+		],
+		"parameters": [
+		],
+		"responses": {
+			"200": {
+				"description": "OK"
+			}
+		}
+	}
+},
+"/sc-prizes/login": {
+	"post": {
+		"tags": [
+			"Front - Prizes"
+		],
+		"summary": "Front - login",
+		"description": "Ejecuta el login en base a DNI y email.",
+		"operationId": "front-prizes-login",
+		"produces": [
+			"application/json"
+		],
+		"parameters": [
+			{
+				"name": "dni",
+				"in": "formData",
+				"description": "DNI del usuario a loguear",
+				"type": "integer"
+			},
+			{
+				"name": "email",
+				"in": "formData",
+				"description": "Email del usuario a loguear",
+				"type": "string"
+			}
+		],
+		"responses": {
+			"200": {
+				"description": "OK"
+			},
+			"400": {
+				"description": "Usuario o email invalido"
+			}
+		}
+	}
+},
+"/sc-prizes/register": {
+	"post": {
+		"tags": [
+			"Front - Prizes"
+		],
+		"summary": "Front - register",
+		"description": "Registra un nuevo usuario",
+		"operationId": "front-prizes-register",
+		"produces": [
+			"application/json"
+		],
+		"parameters": [
+			{ "name": "dni", "required": true, "in": "formData", "description": "Datos de registración. Obligatorio.", "type": "integer" },
+			{ "name": "email", "required": true, "in": "formData", "description": "Datos de registración. Obligatorio.", "type": "string" },
+			{ "name": "nombre", "required": true, "in": "formData", "description": "Datos de registración. Obligatorio.", "type": "string" },
+			{ "name": "domicilio", "required": true, "in": "formData", "description": "Datos de registración. Obligatorio.", "type": "string" },
+			{ "name": "localidad", "required": true, "in": "formData", "description": "Datos de registración. Obligatorio.", "type": "string" },
+			{ "name": "provincia", "required": true, "in": "formData", "description": "Datos de registración. Obligatorio.", "type": "string" },
+			{ "name": "codigopostal", "required": true, "in": "formData", "description": "Datos de registración. Obligatorio.", "type": "string" },
+			{ "name": "telefono", "required": true, "in": "formData", "description": "Datos de registración. Obligatorio.", "type": "string" },
+			{ "name": "acepto", "required": true, "in": "formData", "description": "Datos de registración. Obligatorio.", "type": "integer" },
+			{ "name": "captcha", "required": true, "in": "formData", "description": "Id:Codigo del captcha<br>Para pruebas en DEV, usar:<br>1:1234", "type": "string" }
+		],
+		"responses": {
+			"200": {
+				"description": "OK"
+			},
+			"400": {
+				"description": "Combinacion usuario/email ya existe<br>Captcha incorrecto<br>DNI requerido<br>Email requerido<br>Nombre requerido<br>Domicilio requerido<br>Localidad requerido<br>Provincia requerido<br>Codigopostal requerido<br>Telefono requerido<br>Acepto requerido"
+			}
+		}
+	}
+},
+"/sc-prizes/redeem": {
+	"post": {
+		"tags": [
+			"Front - Prizes"
+		],
+		"summary": "Front - redeem",
+		"description": "Redime un codigo de barras para intentar ganar un premio",
+		"operationId": "front-prizes-redeem",
+		"produces": [
+			"application/json"
+		],
+		"parameters": [
+			{ "name": "dni", "required": true, "in": "formData", "description": "DNI", "type": "integer" },
+			{ "name": "email", "required": true, "in": "formData", "description": "Email", "type": "string" },
+			{ "name": "prizeCode", "required": true, "in": "formData", "description": "Codigo de pemio a validar", "type": "integer" },
+			{ "name": "captcha", "required": true, "in": "formData", "description": "Id:Codigo del captcha<br>Para pruebas en DEV, usar:<br>1:1234", "type": "string" }
+		],
+		"responses": {
+			"200": {
+				"description": "OK"
+			},
+			"400": {
+				"description": "Usuario inexistente<br>Captcha incorrecto<br>No ganaste<br>Ya ganaste este premio"
+			}
+		}
+	}
+},
+"/sc-prizes/winners": {
+	"get": {
+		"tags": [
+			"Front - Prizes"
+		],
+		"summary": "Front - winners",
+		"description": "Lista los ganadores",
+		"operationId": "front-prizes-winners",
+		"produces": [
+			"application/json"
+		],
+		"parameters": [],
+		"responses": {
+			"200": {
+				"description": "OK"
+			}
+		}
+	}
+}

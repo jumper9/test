@@ -1,0 +1,6 @@
+conf-server/
+log/
+tmp/
+composer.lock
+composer.json
+install/
