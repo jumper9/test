@@ -62,7 +62,7 @@ class GetdataController {
 		}
 		
 		$totalRows = f::dbRes("SELECT FOUND_ROWS()");
-		if($totalRows<= $page*$rowsPerPage) { $nextPage=0; }
+		if($totalRows <= $page*$rowsPerPage) { $outData["nextPage"] = 0; }
 		
 
 		$form = f::dbFirstRow("select id, name, enabled_domains, detail 
