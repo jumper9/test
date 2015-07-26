@@ -25,7 +25,7 @@ class PostController {
 			f::validateParam("captcha", array("captcha"), "Wrong captcha");
 		}
 
-		self::validateFields($fields);
+		$dataFields = self::validateFields($fields);
 		
 		if(f::hasErrors()) { return; }
 
@@ -83,6 +83,7 @@ class PostController {
 				if(!isset($field["type"])) {
 					$field["type"] = "string";
 				}
+				$validations = array();
 				$validations[0] = $field["type"];
 				if(isset($field["minlength"]) && $field["minlength"]) {
 					$validations[] = "minlength:{$field["minlength"]}";
@@ -99,9 +100,11 @@ class PostController {
 				if(!isset($field["errorMessage"])) {
 					$field["errorMessage"] = "Invalid {$field["name"]}";
 				}
+				
 				f::validateParam($field["name"], $validations, $field["errorMessage"]);
 				$dataFields[$field["name"]] = f::getParam($field["name"]);
 			}
 		} 
+		return $dataFields;
 	}
 }
