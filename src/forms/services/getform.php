@@ -17,21 +17,8 @@ class GetformController {
 		if(!$form) {
 			f::setError(400,"Form not found");
 		} else {
-			
-			if($form["enabled_domains"]) {
-				$enabledDomains = explode(",",$form["enabled_domains"]);
-				$host = f::strtoken($_SERVER["HTTP_HOST"],1,":");
-				$host2 = f::strtoken($_SERVER["X-Forwarded-For"],1,":");
-				$hostOk = false;
-				foreach ($enabledDomains as $enabledDomain) {
-					$enabledDomain =  trim($enabledDomain);
-					if($enabledDomain && ( $enabledDomain == $host || $enabledDomain == $host2 )) {
-						$hostOk = true;
-					}
-				}
-				if(!$hostOk) {
-					f::setError(400,"Hostname not allowed");
-				}
+			if(!self::checkDomain($form)) {
+				f::setError(400,"Hostname not allowed");
 			}
 			
 		}
@@ -42,5 +29,23 @@ class GetformController {
 		$captcha = f::getCaptcha();
 		
 		f::setResponseJson(array("id" => $uniqId, "captcha" => $captcha, "form" => $formDetail ));
+	}
+	
+	private static function checkDomain($form) {
+		$hostOk = true;
+		if($form["enabled_domains"]) {
+			$enabledDomains = explode(",",$form["enabled_domains"]);
+			$host = f::strtoken($_SERVER["HTTP_HOST"],1,":");
+			$host2 = f::strtoken($_SERVER["X-Forwarded-For"],1,":");
+			$hostOk = false;
+			foreach ($enabledDomains as $enabledDomain) {
+				$enabledDomain =  trim($enabledDomain);
+				if($enabledDomain && ( $enabledDomain == $host || $enabledDomain == $host2 )) {
+					$hostOk = true;
+				}
+			}
+
+		}
+		return $hostOk;
 	}
 }
