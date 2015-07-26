@@ -50,11 +50,6 @@ class GetdataController {
 		$formData = f::dbFullRes($sql,array("siteTableId"=>$siteTableId, "textFilter"=>$textFilter, "orderBy"=>$orderBy, "limit"=>$limit));
 		
 		foreach($formData as $k=>$v) {
-			/*
-			if($formData[$k]["birthdate"]=="0000-00-00") {
-				$formData[$k]["birthdate"]="";
-			}
-			*/
 			$formData[$k]["user_data"] = json_decode($formData[$k]["user_data"],true);
 		}
 		

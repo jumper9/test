@@ -25,14 +25,12 @@ class FormsController {
 	public static function edit() 
 	{
 		if(!security::isLogged() || !USER_IS_ADMIN) { return; }
-		$clientId = f::getParam("client_id");
 		$name = f::getParam("name");
-		$detail = f::getParam("detail");
 		$availableFrom = f::date2sql(f::getParam("available_from"));
 		$availableTo = f::date2sql(f::getParam("available_to"));
 		$status = f::getParam("status");
 		
-		if($status!=1 and $status!=0 and $status!=2) {
+		if($status!=1 && $status!=0 && $status!=2) {
 			f::setError(400, "Wrong Status");
 		}
 		if(!$name) {

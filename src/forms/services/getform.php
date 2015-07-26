@@ -6,7 +6,7 @@ class GetformController {
     public static function get() {
 
 
-		$form = f::dbFirstRow("select name, enabled_domains, detail 
+		$form = f::dbFirstRow("select enabled_domains, detail 
 						from fm_forms 
 						where id = {p:form_id} 
 						and client_id = {p:client_id} 
@@ -25,7 +25,7 @@ class GetformController {
 				$hostOk = false;
 				foreach ($enabledDomains as $enabledDomain) {
 					$enabledDomain =  trim($enabledDomain);
-					if($enabledDomain and ( $enabledDomain == $host or $enabledDomain == $host2 )) {
+					if($enabledDomain && ( $enabledDomain == $host || $enabledDomain == $host2 )) {
 						$hostOk = true;
 					}
 				}

@@ -6,30 +6,7 @@ header('Content-Type: application/json; charset=utf-8');
 class ListController {
         
     public static function get() {
-        $host=$_SERVER["REQUEST_SCHEME"]."://".$_SERVER["HTTP_HOST"]; 
-
-		/*
-		"/sc-prizes/excelregistered": {
-	"get": {
-		"tags": [
-			"Back"
-		],
-		"summary": "Back - excel registered",
-		"description": "Devuelve un Excel adjunto con todos los usuarios registrados",
-		"operationId": "back-prizes-excelregistered",
-		"produces": [
-			"application/json"
-		],
-		"parameters": [
-		],
-		"responses": {
-			"200": {
-				"description": "OK"
-			}
-		}
-	}
-}
-*/
+    
 		$forms=f::dbFullRes("select f.id, f.client_id, f.name, f.detail, f.description, date_format(f.available_from,'%d/%m/%Y') as available_from, date_format(f.available_to,'%d/%m/%Y') as available_to, f.status, c.name client_name 
 							from fm_forms f 
 							left join fm_clients c on (c.id=f.client_id)
@@ -47,12 +24,12 @@ class ListController {
 			$detail = json_decode($f["detail"],true);
 
 			$parameters=array();
-			if(isset($detail["captcha"]) and $detail["captcha"]) {
+			if(isset($detail["captcha"]) && $detail["captcha"]) {
 				$parameters[] = array("in"=>"formData", "name"=>"captcha", "type"=>"integer", "description"=>"Call captcha service or get a form definition for the capthca image.<br>Use number \"9999\" for test purposes.");
 			}
 			$error400 = "";
 			
-			if(isset($detail["fields"]) and is_array($detail["fields"])) {
+			if(isset($detail["fields"]) && is_array($detail["fields"])) {
 				foreach($detail["fields"] as $field) {
 					$p["in"] = "formData";
 					if(isset($field["type"]) && isset($field["name"])) {

@@ -23,7 +23,7 @@ class PostController {
 				$hostOk = false;
 				foreach ($enabledDomains as $enabledDomain) {
 					$enabledDomain =  trim($enabledDomain);
-					if($enabledDomain and ( $enabledDomain == $host or $enabledDomain == $host2 )) {
+					if($enabledDomain && ( $enabledDomain == $host || $enabledDomain == $host2 )) {
 						$hostOk = true;
 					}
 				}
@@ -41,12 +41,9 @@ class PostController {
 		$fields = $formDetail["fields"];
 		
 		// validate captcha
-		if(isset($formDetail["captcha"]) and $formDetail["captcha"]) {
+		if(isset($formDetail["captcha"]) && $formDetail["captcha"]) {
 			f::validateParam("captcha", array("captcha"), "Wrong captcha");
 		}
-
-		// sanitize date formats
-//		f::setParam("birthdate",f::date2sql(f::getParam("birthdate")));
 
 		// validate fields
 		$dataFields = array();

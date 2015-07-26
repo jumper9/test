@@ -1,7 +1,7 @@
 <?php 
 namespace wunderman\wunderforms;
 
-class clientsController {
+class ClientsController {
 
 	public static function get() {
 
@@ -16,7 +16,7 @@ class clientsController {
 		$clientId = f::getParam("client_id");
 		$name = f::getParam("name");
 		
-		if($status!=1 and $status!=0) {
+		if($status!=1 && $status!=0) {
 			f::setError(400, "Invalid Client Status");
 		}
 		if(!$clientId && !$name) {

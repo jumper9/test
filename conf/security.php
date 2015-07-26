@@ -1,7 +1,7 @@
 <?php 
 namespace wunderman\wunderforms;
 
-class security 
+class Security 
 {
     public static function isLogged() 
     {

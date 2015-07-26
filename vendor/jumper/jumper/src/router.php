@@ -10,6 +10,10 @@ class Router
 		$frontFilterClassName = APP_NAMESPACE."\\FrontFilter";
         $url = $frontFilterClassName::getUrl();
 
+		if($url=="") {
+			return;
+		}
+		
         $module=J::strtoken($url,2,"/");
         $class=J::strtoken($url,3,"/");
         $className = APP_NAMESPACE."\\".str_replace("-","",ucfirst($class))."Controller";

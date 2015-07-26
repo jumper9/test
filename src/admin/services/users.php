@@ -8,7 +8,7 @@ class UsersController {
 		$passwordNew = trim(f::getParam("passwordNew"));
 		$passwordNew2 = trim(f::getParam("passwordNew2"));
 		
-		if($passwordNew!=$passwordNew2 or !$passwordNew) {
+		if($passwordNew!=$passwordNew2 || !$passwordNew) {
 			f::setError(400,"Invalid Password");
 		} else {
 			// valido userId actual
@@ -21,7 +21,7 @@ class UsersController {
 			if(!$pwdOk) {
 				f::setError(400,"Clave actual o usuario invalido");
 			} else {
-				f::dbQuery("update fm_users set password='".md5($passwordNew)."' where id = {$userId}",array("userId", $userId));
+				f::dbQuery("update fm_users set password = {pwd} where id = {userId}", array("pwd" => md5($passwordNew), "userId" => $userId));
 			}
 		}
 	}
@@ -52,40 +52,32 @@ class UsersController {
 		$password1 = trim(f::getParam("password1"));
 		$password2 = trim(f::getParam("password2"));
 		
-		if($status!=1 and $status!=0) {
+		if($status!=1 && $status!=0) {
 			f::setError(400, "Invalid Status");
 		}
-		if($password1 and $password1<>$password2) {
+		if($password1 && $password1<>$password2) {
 			f::setError(400, "Invalid Password");
-		}
-		$sqlPassword="";
-		if($password1 and $password1==$password2) {
-			$sqlPassword=", password = {pwd1} ";
 		}
 		
 		if(!f::hasErrors()) {
-			$roles=self::getSaveRoles();
-			f::dbQuery("update fm_users set email= {email}, status= {status} $sqlPassword where id = {p:userId}", array("email"=>$email, "status"=>$status, "pwd1"=> md5($password1)) );
+			f::dbQuery("update fm_users set email= {email}, status= {status} where id = {p:userId}", array("email"=>$email, "status"=>$status, "pwd1"=> md5($password1)) );
+			if($password1 && $password1==$password2) {
+				f::dbQuery("update fm_users set password = {pwd} where id = {p:userId}",array("pwd" => md5($password1)));
+			}
 
 			$userClients = f::getParam("userClients");
 			
 			f::dbQuery("delete from fm_users_clients where user_id = {p:userId}");
-			foreach ($userClients as $clientId => $value) {
-				f::dbQuery("insert into fm_users_clients set user_id = {userId}, client_id = {clientId}", array("userId"=>$userId, "clientId"=>$clientId));
+			if(is_array($userClients)) {
+				foreach ($userClients as $clientId => $value) {
+					f::dbQuery("insert into fm_users_clients set user_id = {userId}, client_id = {clientId}", array("userId"=>$userId, "clientId"=>$clientId));
+				}
 			}
 
 			f::setResponseJson(array("ok"=>1));
 		}
 	}
-	private static function getSaveRoles() {
-		$roles="";
-		if(f::getParam("role_admin")) { $roles.=($roles?",":"")."admin"; }
-		if(f::getParam("role_content")) { $roles.=($roles?",":"")."content"; }
-		if(f::getParam("role_eec")) { $roles.=($roles?",":"")."eec"; }
-		if(f::getParam("role_eec_admin")) { $roles.=($roles?",":"")."eec-admin"; }
-		return $roles;
-		
-	}
+
 	public static function add() {
 
 		if(!security::isLogged() || !USER_IS_ADMIN) { return; }
@@ -103,25 +95,24 @@ class UsersController {
 		} else if($exists) {
 			f::setError(400, "Failed, user already exists.");
 		}
-		if($status!=1 and $status!=0) {
+		if($status!=1 && $status!=0) {
 			f::setError(400, "Incorrect Status");
 		}
-		$sqlPassword="";
-		if($password1 and $password1<>$password2) {
+		if($password1 && $password1<>$password2) {
 			f::setError(400, "Incorrect Password");
-		} else if($password1 and $password1==$password2) {
-			$sqlPassword=", password = {pwd} ";
-		}
-		$roles=self::getSaveRoles();
+		} 
 		if(!f::hasErrors()) {
-			$userId = f::dbInsert("insert into fm_users set email = {email}, name = {name} , status= {status} $sqlPassword ",array("pwd" => md5($password1), "email"=> $email, "name" => $name, "status" => $status ));
-
+			
+			$userId = f::dbInsert("insert into fm_users set email = {email}, name = {name}, status = {status} ",array("email"=> $email, "name" => $name, "status" => $status ));
+			if($password1 && $password1==$password2) {
+				f::dbQuery("update fm_users set password = {pwd} where id = {userId}",array("pwd" => md5($password1), "userId"=>$userId));
+			}
+			
 			$userClients = f::getParam("userClients");
 			f::dbQuery("delete from fm_users_clients where user_id = {userId}");
 			foreach ($userClients as $clientId => $value) {
 				f::dbQuery("insert into fm_users_clients set user_id = {userId}, client_id = {clientId}", array("userId"=>$userId, "clientId"=>$clientId));
 			}
-			
 			
 			f::setResponseJson(array("userId"=>$userId));
 		}

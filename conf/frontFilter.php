@@ -12,7 +12,7 @@ class FrontFilter {
 			
 		} else if($url == "/" || $url == "/index") {
 			header("Location:/admin/index");
-			die;
+			$url = "";
 		} 
 		
 		return $url;
