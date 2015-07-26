@@ -76,6 +76,7 @@
       
 
       window.swaggerUi.load();
+	  <?PHP if(ENV=="LOCAL") { echo 'setTimeout(function() {$("#validator").fadeOut();} , 2000);'; } ?>
   });
   </script>
 </head>

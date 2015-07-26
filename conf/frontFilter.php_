@@ -1,0 +1,16 @@
+<?php
+namespace wunderman\wunderforms;
+
+class FrontFilter {
+	public static function getUrl() {
+		
+		if(f::getParam("_url") == "/") {
+			$url="/admin/index";
+		} else {
+			$url=f::strtoken(strtolower(f::getParam("_url")),-1,"/api");
+		}
+		
+		return $url;
+	}
+}
+
